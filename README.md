@@ -78,7 +78,7 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 </p>
 
 <p align="center">
-  <em>Upload a dataset containing two numeric columns for relationship analysis.</em>
+  <em>Start by choosing a CSV dataset to analyze.</em>
 </p>
 
 <br>
@@ -88,7 +88,7 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 </p>
 
 <p align="center">
-  <em>Ask about the relationship between two numeric columns and let the planner select the correlation tool.</em>
+  <em>Upload a dataset with numeric columns and ask about the relationship between Sales and Advertising.</em>
 </p>
 
 <br>
@@ -98,7 +98,7 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 </p>
 
 <p align="center">
-  <em>Review the correlation score, relationship strength, visualization, and structured tool result.</em>
+  <em>The planner selects the correlation tool and returns a correlation score, relationship interpretation, visualization, and structured result.</em>
 </p>
 
 ---
@@ -110,7 +110,7 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 </p>
 
 <p align="center">
-  <em>Upload a CSV containing categorical or text columns and inspect the detected dataset structure.</em>
+  <em>Start by choosing a CSV containing categorical or text data.</em>
 </p>
 
 <br>
@@ -120,7 +120,7 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 </p>
 
 <p align="center">
-  <em>Ask which values are most common and let the planner select the top-values tool.</em>
+  <em>Upload the dataset and ask which values are most common in a selected column.</em>
 </p>
 
 <br>
@@ -130,7 +130,7 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 </p>
 
 <p align="center">
-  <em>Review frequency counts, tie handling, the visualization, and the structured tool result.</em>
+  <em>The planner selects the top-values tool and returns frequency counts, tie-aware output, a bar visualization, and the structured tool result.</em>
 </p>
 
 ## Tech Stack
