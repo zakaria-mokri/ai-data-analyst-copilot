@@ -78,7 +78,7 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 </p>
 
 <p align="center">
-  <em>Upload a CSV and inspect the detected dataset structure.</em>
+  <em>Upload a CSV containing numeric data and inspect the detected columns.</em>
 </p>
 
 <br>
@@ -88,7 +88,7 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 </p>
 
 <p align="center">
-  <em>Ask a natural-language question and receive a plain-English answer.</em>
+  <em>Ask for an average, median, minimum, or maximum using natural language.</em>
 </p>
 
 <br>
@@ -98,7 +98,7 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 </p>
 
 <p align="center">
-  <em>Review the selected tool, column, and structured analysis result.</em>
+  <em>The numeric summary tool returns structured statistics and a plain-English answer.</em>
 </p>
 
 ---
@@ -110,7 +110,7 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 </p>
 
 <p align="center">
-  <em>Upload a dataset containing numeric columns for relationship analysis.</em>
+  <em>Upload a dataset containing two numeric columns for relationship analysis.</em>
 </p>
 
 <br>
@@ -120,7 +120,7 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 </p>
 
 <p align="center">
-  <em>The planner routes the question to the correlation tool and generates an interpretation.</em>
+  <em>Ask about the relationship between two columns and let the planner select the correlation tool.</em>
 </p>
 
 <br>
@@ -130,7 +130,7 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 </p>
 
 <p align="center">
-  <em>Correlation strength is visualized alongside the structured tool output.</em>
+  <em>Review the correlation score, relationship strength, visualization, and structured tool result.</em>
 </p>
 
 ## Tech Stack
