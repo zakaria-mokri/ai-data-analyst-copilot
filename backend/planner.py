@@ -1,6 +1,15 @@
 from typing import Optional
 
 
+def normalize_text(value: str) -> str:
+    return (
+        value.lower()
+        .replace("_", "")
+        .replace("-", "")
+        .replace(" ", "")
+    )
+
+
 def choose_tool(question: str) -> str:
     question_lower = question.lower()
 
@@ -26,22 +35,22 @@ def choose_tool(question: str) -> str:
 
 
 def choose_column(question: str, columns: list[str]) -> Optional[str]:
-    question_lower = question.lower()
+    normalized_question = normalize_text(question)
 
     for column in columns:
-        if column.lower() in question_lower:
+        if normalize_text(column) in normalized_question:
             return column
 
     return None
 
 
 def choose_columns(question: str, columns: list[str]) -> list[str]:
-    question_lower = question.lower()
+    normalized_question = normalize_text(question)
 
     matches = []
 
     for column in columns:
-        if column.lower() in question_lower:
+        if normalize_text(column) in normalized_question:
             matches.append(column)
 
     return matches
