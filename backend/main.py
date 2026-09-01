@@ -3,8 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 from io import StringIO
 
-from planner import choose_tool, choose_column
-from tools import numeric_summary, top_values
+from planner import choose_tool, choose_column, choose_columns
+from tools import numeric_summary, top_values, correlation
 from models import AnalyzeResponse
 
 app = FastAPI()
@@ -55,11 +55,20 @@ async def upload_csv(file: UploadFile = File(...)):
     numeric_summary_data = {}
 
     for column in numeric_columns.columns:
-        numeric_summary_data[column] = {
-            "min": float(numeric_columns[column].min()),
-            "max": float(numeric_columns[column].max()),
-            "mean": float(numeric_columns[column].mean()),
-        }
+        series = numeric_columns[column].dropna()
+
+        if series.empty:
+            numeric_summary_data[column] = {
+                "min": None,
+                "max": None,
+                "mean": None,
+            }
+        else:
+            numeric_summary_data[column] = {
+                "min": float(series.min()),
+                "max": float(series.max()),
+                "mean": float(series.mean()),
+            }
 
     return {
         "filename": file.filename,
@@ -168,11 +177,13 @@ async def plan_analysis(
 
     selected_tool = choose_tool(question)
     selected_column = choose_column(question, column_list)
+    selected_columns = choose_columns(question, column_list)
 
     return {
         "question": question,
         "selected_tool": selected_tool,
         "selected_column": selected_column,
+        "selected_columns": selected_columns,
     }
 
 
@@ -207,23 +218,47 @@ async def analyze(
         df.columns.tolist(),
     )
 
-    if selected_column is None:
-        raise HTTPException(
-            status_code=400,
-            detail="Could not determine which column you are asking about.",
-        )
+    selected_columns = choose_columns(
+        question,
+        df.columns.tolist(),
+    )
 
     try:
         if selected_tool == "numeric_summary":
+            if selected_column is None:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Could not determine which column you are asking about.",
+                )
+
             result = numeric_summary(
                 df,
                 selected_column,
             )
 
         elif selected_tool == "top_values":
+            if selected_column is None:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Could not determine which column you are asking about.",
+                )
+
             result = top_values(
                 df,
                 selected_column,
+            )
+
+        elif selected_tool == "correlation":
+            if len(selected_columns) < 2:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Please mention two numeric columns for correlation.",
+                )
+
+            result = correlation(
+                df,
+                selected_columns[0],
+                selected_columns[1],
             )
 
         else:
@@ -270,26 +305,70 @@ async def analyze(
                 f"I analyzed the {selected_column} column."
             )
 
-    else:
+    elif selected_tool == "top_values":
         if result:
-            top_value = result[0]
+            top_count = result[0]["count"]
 
-            answer = (
-                f"The most common {selected_column} is "
-                f"'{top_value['value']}', appearing "
-                f"{top_value['count']} time(s)."
-            )
+            tied_values = [
+                item["value"]
+                for item in result
+                if item["count"] == top_count
+            ]
+
+            if len(tied_values) == 1:
+                answer = (
+                    f"The most common {selected_column} is "
+                    f"'{tied_values[0]}', appearing "
+                    f"{top_count} time(s)."
+                )
+
+            else:
+                joined_values = ", ".join(tied_values)
+
+                answer = (
+                    f"There is a tie for the most common "
+                    f"{selected_column}: {joined_values}. "
+                    f"Each appears {top_count} time(s)."
+                )
 
         else:
             answer = (
                 f"No values were found for {selected_column}."
             )
 
+    else:
+        correlation_value = result["correlation"]
+
+        if correlation_value >= 0.7:
+            strength = "strong positive"
+        elif correlation_value >= 0.3:
+            strength = "moderate positive"
+        elif correlation_value > -0.3:
+            strength = "weak"
+        elif correlation_value > -0.7:
+            strength = "moderate negative"
+        else:
+            strength = "strong negative"
+
+        answer = (
+            f"The correlation between "
+            f"{result['column_x']} and {result['column_y']} is "
+            f"{correlation_value:.2f}, which indicates a "
+            f"{strength} relationship."
+        )
+
+    plan_column = selected_column
+
+    if selected_tool == "correlation":
+        plan_column = (
+            f"{selected_columns[0]} + {selected_columns[1]}"
+        )
+
     return {
         "question": question,
         "plan": {
             "tool": selected_tool,
-            "column": selected_column,
+            "column": plan_column,
         },
         "result": result,
         "answer": answer,

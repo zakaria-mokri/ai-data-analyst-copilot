@@ -6,6 +6,12 @@ def choose_tool(question: str) -> str:
 
     if any(
         word in question_lower
+        for word in ["correlation", "correlate", "relationship"]
+    ):
+        return "correlation"
+
+    if any(
+        word in question_lower
         for word in ["average", "mean", "median", "min", "max"]
     ):
         return "numeric_summary"
@@ -27,3 +33,15 @@ def choose_column(question: str, columns: list[str]) -> Optional[str]:
             return column
 
     return None
+
+
+def choose_columns(question: str, columns: list[str]) -> list[str]:
+    question_lower = question.lower()
+
+    matches = []
+
+    for column in columns:
+        if column.lower() in question_lower:
+            matches.append(column)
+
+    return matches
