@@ -71,38 +71,6 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 
 ## Screenshots
 
-### Numeric Summary
-
-<p align="center">
-  <img src="screenshots/numeric-summary/01-upload.png" width="620" />
-</p>
-
-<p align="center">
-  <em>Upload a CSV containing numeric data and inspect the detected columns.</em>
-</p>
-
-<br>
-
-<p align="center">
-  <img src="screenshots/numeric-summary/02-answer.png" width="620" />
-</p>
-
-<p align="center">
-  <em>Ask for an average, median, minimum, or maximum using natural language.</em>
-</p>
-
-<br>
-
-<p align="center">
-  <img src="screenshots/numeric-summary/03-result.png" width="620" />
-</p>
-
-<p align="center">
-  <em>The numeric summary tool returns structured statistics and a plain-English answer.</em>
-</p>
-
----
-
 ### Correlation Analysis
 
 <p align="center">
@@ -120,7 +88,7 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 </p>
 
 <p align="center">
-  <em>Ask about the relationship between two columns and let the planner select the correlation tool.</em>
+  <em>Ask about the relationship between two numeric columns and let the planner select the correlation tool.</em>
 </p>
 
 <br>
@@ -131,6 +99,38 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 
 <p align="center">
   <em>Review the correlation score, relationship strength, visualization, and structured tool result.</em>
+</p>
+
+---
+
+### Top Values Analysis
+
+<p align="center">
+  <img src="screenshots/top-values/01-upload.png" width="620" />
+</p>
+
+<p align="center">
+  <em>Upload a CSV containing categorical or text columns and inspect the detected dataset structure.</em>
+</p>
+
+<br>
+
+<p align="center">
+  <img src="screenshots/top-values/02-answer.png" width="620" />
+</p>
+
+<p align="center">
+  <em>Ask which values are most common and let the planner select the top-values tool.</em>
+</p>
+
+<br>
+
+<p align="center">
+  <img src="screenshots/top-values/03-result.png" width="620" />
+</p>
+
+<p align="center">
+  <em>Review frequency counts, tie handling, the visualization, and the structured tool result.</em>
 </p>
 
 ## Tech Stack
