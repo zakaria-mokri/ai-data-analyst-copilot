@@ -2,30 +2,24 @@
 
 AI Data Analyst Copilot is a full-stack data analysis application that allows users to upload a CSV file, ask questions about the dataset in natural language, and receive structured analysis with a plain-English explanation.
 
-The project uses a deterministic rule-based planner to translate supported natural-language questions into specific Pandas analysis tools.
-
-This keeps the application free to run while demonstrating a planner → tool → result architecture that can later be extended with an LLM-based planner.
+The current version uses a deterministic rule-based planner instead of a paid LLM API. This keeps the project free and predictable to run while preserving a planner → tool → result architecture that can later be extended with an LLM.
 
 ## Features
 
-* CSV file upload and validation
+* Upload and inspect CSV files
 * Automatic dataset profiling
-* Dataset preview
-* Column and data-type inspection
-* Missing-value analysis
-* Numeric dataset summaries
 * Natural-language analysis requests
-* Rule-based tool selection
-* Automatic column matching
+* Rule-based analysis planning
+* Automatic tool selection
 * Numeric summary analysis
 * Top-values analysis
 * Pearson correlation analysis
+* Plain-English answers
+* Visual result cards and charts
 * Structured Pydantic API responses
-* Plain-English result explanations
-* Visual analysis cards and charts
 * FastAPI backend
 * Next.js frontend
-* Interactive FastAPI API documentation
+* Interactive API documentation
 * Health-check endpoint
 
 ## How It Works
@@ -34,7 +28,7 @@ This keeps the application free to run while demonstrating a planner → tool �
 CSV Dataset
      │
      ▼
- Upload & Profile
+Upload & Profile
      │
      ▼
 User Question
@@ -42,43 +36,35 @@ User Question
      ▼
 Rule-Based Planner
      │
-     ├── Tool Selection
-     └── Column Selection
-             │
-             ▼
-       Analysis Tool
-             │
-      ┌──────┼───────┐
-      ▼      ▼       ▼
-   Numeric   Top   Correlation
-   Summary  Values
-      │      │       │
-      └──────┼───────┘
-             ▼
-     Structured Result
-             │
-             ▼
-    Plain-English Answer
-             │
-             ▼
-        Frontend UI
+     ▼
+Tool Selection
+     │
+     ├── Numeric Summary
+     ├── Top Values
+     └── Correlation
+     │
+     ▼
+Pandas Analysis
+     │
+     ▼
+Structured Result
+     │
+     ▼
+Plain-English Answer
+     │
+     ▼
+Frontend Visualization
 ```
 
 ## Analysis Tools
 
 ### Numeric Summary
 
-The numeric summary tool analyzes a selected numeric column.
+Supports questions such as:
 
-Example questions:
-
-```text
-What is the average Sales?
-
-What is the median Revenue?
-
-What is the maximum Price?
-```
+* What is the average Identifier?
+* What is the median Sales?
+* What is the maximum Revenue?
 
 The tool calculates:
 
@@ -88,7 +74,7 @@ The tool calculates:
 * Mean
 * Median
 
-Example structured result:
+Example result:
 
 ```json
 {
@@ -100,107 +86,27 @@ Example structured result:
 }
 ```
 
-## Top Values
+### Top Values
 
-The top-values tool analyzes the frequency of values within a selected column.
+Supports questions such as:
 
-Example questions:
+* What are the most common Last name values?
+* What are the top categories?
+* What is the most frequent product?
 
-```text
-What are the most common categories?
+The tool calculates the frequency of values in a selected column and returns the most common results.
 
-What are the top values in Region?
+It also handles ties when multiple values have the same frequency.
 
-What is the most frequent Product?
-```
+### Correlation
 
-The tool returns up to the 10 most frequent values and their occurrence counts.
+Supports questions such as:
 
-Example:
+* What is the correlation between Sales and Advertising?
 
-```json
-[
-  {
-    "value": "Technology",
-    "count": 48
-  },
-  {
-    "value": "Furniture",
-    "count": 36
-  }
-]
-```
+The tool calculates the Pearson correlation coefficient between two numeric columns.
 
-## Correlation Analysis
-
-The correlation tool calculates the Pearson correlation coefficient between two numeric columns.
-
-Example question:
-
-```text
-What is the correlation between Sales and Advertising?
-```
-
-The application returns the correlation value together with a plain-English interpretation of the relationship.
-
-This allows questions about whether two numeric variables appear to move together.
-
-## Rule-Based Planner
-
-The current planner does not call a paid language model.
-
-Instead, it maps keywords in the user's question to supported analysis tools.
-
-For example:
-
-```text
-"average"
-"mean"
-"median"
-"minimum"
-"maximum"
-        │
-        ▼
- numeric_summary
-```
-
-```text
-"top"
-"common"
-"most frequent"
-"popular"
-        │
-        ▼
-    top_values
-```
-
-```text
-"correlation"
-"correlate"
-"relationship"
-        │
-        ▼
-   correlation
-```
-
-The planner also attempts to identify referenced dataset columns by matching normalized column names against the user's question.
-
-This approach keeps the analysis deterministic and transparent while preserving a clean abstraction for replacing the planner with an LLM in a future version.
-
-## Dataset Profiling
-
-When a CSV file is uploaded, the backend generates basic information about the dataset, including:
-
-* Filename
-* Row count
-* Column count
-* Column names
-* Data types
-* Missing-value counts
-* First five rows
-* Numeric column summaries
-
-This allows users to inspect the structure of a dataset before asking analytical questions.
+The result includes both the numeric correlation value and a plain-English interpretation of the relationship.
 
 ## Screenshots
 
@@ -211,17 +117,17 @@ This allows users to inspect the structure of a dataset before asking analytical
 </p>
 
 <p align="center">
-  <em>Choose a CSV dataset to begin the analysis workflow.</em>
+  <em>Start by choosing a CSV dataset to analyze.</em>
 </p>
 
 <br>
 
 <p align="center">
-  <img src="screenshots/correlation/02-answer.png" width="620" alt="Correlation question">
+  <img src="screenshots/correlation/02-answer.png" width="620" alt="Correlation analysis question">
 </p>
 
 <p align="center">
-  <em>Ask a natural-language question about the relationship between two numeric columns.</em>
+  <em>Upload a dataset with numeric columns and ask about the relationship between Sales and Advertising.</em>
 </p>
 
 <br>
@@ -231,7 +137,7 @@ This allows users to inspect the structure of a dataset before asking analytical
 </p>
 
 <p align="center">
-  <em>The planner selects the correlation tool and returns a structured result, interpretation, and visualization.</em>
+  <em>The planner selects the correlation tool and returns a correlation score, relationship interpretation, visualization, and structured result.</em>
 </p>
 
 ---
@@ -239,21 +145,21 @@ This allows users to inspect the structure of a dataset before asking analytical
 ### Top Values Analysis
 
 <p align="center">
-  <img src="screenshots/top-values/02-answer.png" width="620" alt="Top values question">
+  <img src="screenshots/top-values/02-answer.png" width="620" alt="Top values analysis question">
 </p>
 
 <p align="center">
-  <em>Ask which values appear most frequently in a selected dataset column.</em>
+  <em>Upload the dataset and ask which values are most common in a selected column.</em>
 </p>
 
 <br>
 
 <p align="center">
-  <img src="screenshots/top-values/03-result.png" width="620" alt="Top values result">
+  <img src="screenshots/top-values/03-result.png" width="620" alt="Top values analysis result">
 </p>
 
 <p align="center">
-  <em>The application returns frequency counts and a visual representation of the most common values.</em>
+  <em>The planner selects the top-values tool and returns frequency counts, tie-aware output, a bar visualization, and the structured tool result.</em>
 </p>
 
 ## Tech Stack
@@ -268,36 +174,72 @@ This allows users to inspect the structure of a dataset before asking analytical
 
 ### Frontend
 
-* Next.js 16
-* React 19
-* TypeScript 5
-* Tailwind CSS 4
+* Next.js
+* React
+* TypeScript
+* Tailwind CSS
 
-### Development
+## Architecture
 
-* ESLint
-* FastAPI OpenAPI / Swagger documentation
+```text
+┌──────────────────────┐
+│      Next.js UI      │
+│  React + TypeScript  │
+└──────────┬───────────┘
+           │
+           │ HTTP
+           ▼
+┌──────────────────────┐
+│       FastAPI        │
+│       main.py        │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│       Planner        │
+│     planner.py       │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│   Analysis Tools     │
+│      tools.py        │
+├──────────────────────┤
+│ Numeric Summary      │
+│ Top Values           │
+│ Correlation          │
+└──────────┬───────────┘
+           │
+           ▼
+      Pandas Analysis
+           │
+           ▼
+     Pydantic Result
+           │
+           ▼
+       Frontend UI
+```
 
-## Backend Architecture
+## Backend Design
 
-The backend is intentionally separated into small modules.
+The backend is separated into focused modules.
 
 ```text
 backend/
-├── main.py       # FastAPI application and endpoints
-├── models.py     # Pydantic response models
-├── planner.py    # Tool and column selection
-└── tools.py      # Pandas analysis functions
+├── main.py
+├── models.py
+├── planner.py
+└── tools.py
 ```
 
 ### `main.py`
 
 Handles:
 
+* FastAPI application configuration
 * CSV uploads
-* Dataset parsing
 * Dataset profiling
-* HTTP endpoints
+* Analysis endpoints
 * Analysis orchestration
 * Error responses
 * CORS configuration
@@ -306,14 +248,14 @@ Handles:
 
 Handles:
 
-* Question normalization
+* Natural-language question normalization
 * Analysis tool selection
-* Single-column matching
-* Multi-column matching
+* Column identification
+* Multi-column matching for correlation analysis
 
 ### `tools.py`
 
-Contains the actual Pandas-based analysis functions:
+Contains the Pandas-based analysis functions used by the application.
 
 ```text
 numeric_summary()
@@ -323,14 +265,64 @@ correlation()
 
 ### `models.py`
 
-Defines typed Pydantic response models such as:
+Defines Pydantic models used to provide structured and predictable API responses.
+
+## Rule-Based Planner
+
+The current version intentionally uses deterministic keyword matching rather than an external LLM.
+
+For example:
 
 ```text
-AnalysisPlan
-AnalyzeResponse
+average
+mean
+median
+minimum
+maximum
+    │
+    ▼
+numeric_summary
 ```
 
-These models provide a predictable contract between the FastAPI backend and frontend.
+```text
+top
+common
+most frequent
+popular
+    │
+    ▼
+top_values
+```
+
+```text
+correlation
+correlate
+relationship
+    │
+    ▼
+correlation
+```
+
+The planner also matches dataset column names against the user's question to determine which columns should be analyzed.
+
+This architecture keeps tool execution separate from planning logic, making it possible to replace the deterministic planner with an LLM later without rewriting the analysis layer.
+
+## Dataset Profiling
+
+When a CSV file is uploaded, the backend inspects the dataset and returns useful metadata.
+
+This can include:
+
+* Filename
+* Row count
+* Column count
+* Column names
+* Data types
+* Missing-value counts
+* Dataset preview
+* Numeric summaries
+
+The dataset profile helps users understand the uploaded data before performing analysis.
 
 ## API Endpoints
 
@@ -340,7 +332,9 @@ These models provide a predictable contract between the FastAPI backend and fron
 GET /health
 ```
 
-Example response:
+Returns the current API status.
+
+Example:
 
 ```json
 {
@@ -354,17 +348,7 @@ Example response:
 POST /upload
 ```
 
-Accepts a CSV file and returns a dataset profile.
-
-The response includes:
-
-* Row count
-* Column count
-* Column names
-* Missing values
-* Data types
-* Dataset preview
-* Numeric summaries
+Accepts a CSV file and returns a structured dataset profile.
 
 ### Plan Analysis
 
@@ -372,11 +356,11 @@ The response includes:
 POST /plan
 ```
 
-Accepts a question and list of dataset columns.
+Accepts a natural-language question and dataset columns.
 
-The endpoint returns the tool and columns selected by the planner.
+The planner returns the selected analysis tool and relevant columns.
 
-Example structure:
+Example:
 
 ```json
 {
@@ -395,19 +379,20 @@ Example structure:
 POST /analyze
 ```
 
-Accepts both:
+Accepts:
 
-* CSV file
-* Natural-language question
+* A CSV file
+* A natural-language question
 
-The backend automatically:
+The backend then:
 
-1. Reads the CSV.
-2. Selects an analysis tool.
-3. Identifies the relevant column or columns.
-4. Executes the Pandas analysis.
-5. Builds a structured result.
-6. Returns a plain-English answer.
+1. Reads the CSV file.
+2. Analyzes the user's question.
+3. Selects the appropriate tool.
+4. Identifies the relevant dataset columns.
+5. Runs the Pandas analysis.
+6. Creates a structured result.
+7. Generates a plain-English answer.
 
 ### Numeric Summary
 
@@ -415,7 +400,7 @@ The backend automatically:
 POST /analyze/numeric-summary
 ```
 
-Runs numeric summary analysis directly against a selected column.
+Runs numeric summary analysis directly against a selected numeric column.
 
 ### Top Values
 
@@ -431,7 +416,6 @@ Runs frequency analysis directly against a selected column.
 ai-data-analyst-copilot/
 │
 ├── backend/
-│   ├── .venv/
 │   ├── main.py
 │   ├── models.py
 │   ├── planner.py
@@ -449,8 +433,13 @@ ai-data-analyst-copilot/
 │
 ├── screenshots/
 │   ├── correlation/
-│   ├── numeric-summary/
+│   │   ├── 01-upload.png
+│   │   ├── 02-answer.png
+│   │   └── 03-result.png
+│   │
 │   └── top-values/
+│       ├── 02-answer.png
+│       └── 03-result.png
 │
 ├── .gitignore
 └── README.md
@@ -460,7 +449,7 @@ ai-data-analyst-copilot/
 
 ### Requirements
 
-Install:
+Make sure the following are installed:
 
 * Python 3
 * Node.js
@@ -499,27 +488,27 @@ On Windows:
 .venv\Scripts\activate
 ```
 
-Install the backend dependencies.
+Install the required backend packages.
 
-If you add a `requirements.txt` file:
+If the project contains a `requirements.txt` file:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Start FastAPI:
+Start the FastAPI development server:
 
 ```bash
 uvicorn main:app --reload
 ```
 
-The backend will normally be available at:
+The backend will normally run at:
 
 ```text
 http://127.0.0.1:8000
 ```
 
-Interactive API documentation:
+Interactive API documentation is available at:
 
 ```text
 http://127.0.0.1:8000/docs
@@ -527,7 +516,7 @@ http://127.0.0.1:8000/docs
 
 ## 3. Frontend Setup
 
-Open another terminal:
+Open another terminal and navigate to the frontend:
 
 ```bash
 cd frontend
@@ -545,7 +534,7 @@ Start the Next.js development server:
 npm run dev
 ```
 
-The frontend will normally be available at:
+The frontend will normally run at:
 
 ```text
 http://localhost:3000
@@ -565,7 +554,7 @@ Production build:
 npm run build
 ```
 
-Start production build:
+Start the production build:
 
 ```bash
 npm run start
@@ -579,24 +568,20 @@ npm run lint
 
 ## Error Handling
 
-The API validates uploaded files and analysis requests.
+The API handles common invalid input scenarios, including:
 
-Examples of handled errors include:
-
-* Non-CSV uploads
+* Non-CSV file uploads
 * Unreadable CSV files
-* Missing columns
-* Attempting numeric analysis on non-numeric data
-* Questions where the planner cannot determine a supported tool
-* Questions where the referenced column cannot be determined
+* Missing dataset columns
+* Numeric analysis against non-numeric columns
+* Unsupported natural-language questions
+* Questions where a matching column cannot be identified
 
-Errors are returned with appropriate HTTP status responses so the frontend can display useful feedback.
+Errors are returned through appropriate HTTP responses so the frontend can provide useful feedback.
 
 ## Current AI Approach
 
-The current version intentionally uses a deterministic planner rather than a large language model.
-
-The architecture is:
+The current version uses a deterministic rule-based planner rather than a large language model.
 
 ```text
 Question
@@ -605,10 +590,10 @@ Question
 Planner
    │
    ▼
-Analysis Tool
+Tool
    │
    ▼
-Pandas Execution
+Pandas Analysis
    │
    ▼
 Structured Result
@@ -617,14 +602,15 @@ Structured Result
 Plain-English Answer
 ```
 
-This approach has several advantages for the current prototype:
+This approach provides several advantages for the current version:
 
-* No paid AI API required
-* Predictable behavior
-* Easy debugging
-* Analysis results come from executed Pandas code
-* Clear separation between planning and analysis
-* Easy migration to an LLM-based planner later
+* No paid AI API is required
+* Predictable analysis behavior
+* Easier debugging
+* Deterministic tool execution
+* Analysis results are generated from actual Pandas operations
+* Clear separation between planning and execution
+* Straightforward path to future LLM integration
 
 ## Engineering Concepts Demonstrated
 
@@ -636,13 +622,13 @@ This project demonstrates experience with:
 * Pandas data analysis
 * CSV processing
 * Pydantic models
-* Type-safe API contracts
+* Structured API responses
 * Next.js
 * React
 * TypeScript
 * Tailwind CSS
 * Full-stack frontend/backend integration
-* Natural-language routing
+* Natural-language command routing
 * Rule-based planning
 * Tool abstraction
 * Data validation
@@ -652,25 +638,26 @@ This project demonstrates experience with:
 
 ## Current Limitations
 
-The current version supports a deliberately small set of analysis operations.
+The current version intentionally supports a focused set of analysis operations.
 
 It does not yet provide:
 
 * Open-ended statistical reasoning
 * Arbitrary Python execution
+* LLM-powered planning
 * SQL generation
-* Large-language-model planning
 * Multi-turn conversations
-* Persistent dataset storage
+* Persistent uploaded datasets
 * Large-file processing
+* Advanced statistical analysis
 
-Natural-language understanding is based on deterministic keyword and column matching, so questions outside the supported patterns may not be recognized.
+Natural-language understanding currently relies on deterministic keywords and column-name matching, so questions outside supported patterns may not be recognized.
 
 ## Future Improvements
 
 Potential improvements include:
 
-* LLM-powered planner
+* LLM-powered planning
 * Semantic column matching
 * Additional statistical analysis tools
 * Scatter plots
@@ -678,22 +665,21 @@ Potential improvements include:
 * Time-series analysis
 * Grouped aggregations
 * Automatic chart selection
+* Excel and JSON file support
 * More robust CSV parsing
-* Excel and JSON support
 * Conversation history
 * Dataset persistence
 * Larger dataset support
-* Streaming file processing
 * Automated backend tests
 * Frontend component tests
 * Docker support
 * GitHub Actions CI/CD
-* Deployment of both frontend and backend
+* Production deployment
 
 ## Status
 
 **v0.1 — Working Local Prototype**
 
-The current release provides a functional full-stack CSV analysis workflow with deterministic natural-language tool selection, Pandas-based analysis, typed API responses, and a Next.js frontend.
+The current version provides a functional full-stack CSV analysis workflow with deterministic natural-language tool selection, Pandas-based analysis, typed API responses, and a Next.js frontend.
 
-The next major milestone is expanding the analysis toolset and replacing the rule-based planner with a model-assisted planner while keeping deterministic analysis execution.
+The next major milestone is expanding the analysis toolset and introducing model-assisted planning while keeping the actual data analysis deterministic and tool-based.
