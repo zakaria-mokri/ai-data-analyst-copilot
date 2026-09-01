@@ -74,83 +74,63 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 ### Numeric Summary
 
 <p align="center">
-  <strong>Step 1 — Upload dataset</strong>
-</p>
-
-<p align="center">
   <img src="screenshots/numeric-summary/01-upload.png" width="620" />
 </p>
 
 <p align="center">
-  Upload a CSV and inspect the detected rows, columns, and schema.
+  <em>Upload a CSV and inspect the detected dataset structure.</em>
 </p>
 
----
-
-<p align="center">
-  <strong>Step 2 — Ask a natural-language question</strong>
-</p>
+<br>
 
 <p align="center">
   <img src="screenshots/numeric-summary/02-answer.png" width="620" />
 </p>
 
 <p align="center">
-  The planner selects the appropriate analysis tool and returns a plain-English answer.
+  <em>Ask a natural-language question and receive a plain-English answer.</em>
 </p>
 
----
-
-<p align="center">
-  <strong>Step 3 — Inspect the structured tool result</strong>
-</p>
+<br>
 
 <p align="center">
   <img src="screenshots/numeric-summary/03-result.png" width="620" />
 </p>
 
 <p align="center">
-  The underlying numeric summary remains visible for transparency.
+  <em>Review the selected tool, column, and structured analysis result.</em>
 </p>
 
-<br>
+---
 
 ### Correlation Analysis
-
-<p align="center">
-  <strong>Step 1 — Upload a dataset with two numeric columns</strong>
-</p>
 
 <p align="center">
   <img src="screenshots/correlation/01-upload.png" width="620" />
 </p>
 
----
-
 <p align="center">
-  <strong>Step 2 — Ask about the relationship between two columns</strong>
+  <em>Upload a dataset containing numeric columns for relationship analysis.</em>
 </p>
+
+<br>
 
 <p align="center">
   <img src="screenshots/correlation/02-answer.png" width="620" />
 </p>
 
 <p align="center">
-  The planner routes the request to the correlation tool.
+  <em>The planner routes the question to the correlation tool and generates an interpretation.</em>
 </p>
 
----
-
-<p align="center">
-  <strong>Step 3 — Review the correlation visualization</strong>
-</p>
+<br>
 
 <p align="center">
   <img src="screenshots/correlation/03-result.png" width="620" />
 </p>
 
 <p align="center">
-  The result includes both the Pearson correlation value and a visual strength indicator.
+  <em>Correlation strength is visualized alongside the structured tool output.</em>
 </p>
 
 ## Tech Stack
