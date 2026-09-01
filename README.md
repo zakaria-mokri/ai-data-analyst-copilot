@@ -75,29 +75,29 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 
 #### Dataset Upload
 
-![Numeric summary upload](screenshots/numeric-summary/01-upload.png)
+<img src="screenshots/numeric-summary/01-upload.png" width="700" />
 
 #### Answer
 
-![Numeric summary answer](screenshots/numeric-summary/02-answer.png)
+<img src="screenshots/numeric-summary/02-answer.png" width="700" />
 
 #### Tool Result
 
-![Numeric summary result](screenshots/numeric-summary/03-result.png)
+<img src="screenshots/numeric-summary/03-result.png" width="700" />
 
 ### Correlation Analysis
 
 #### Dataset Upload
 
-![Correlation upload](screenshots/correlation/01-upload.png)
+<img src="screenshots/correlation/01-upload.png" width="700" />
 
 #### Answer
 
-![Correlation answer](screenshots/correlation/02-answer.png)
+<img src="screenshots/correlation/02-answer.png" width="700" />
 
 #### Tool Result
 
-![Correlation result](screenshots/correlation/03-result.png)
+<img src="screenshots/correlation/03-result.png" width="700" />
 
 ## Tech Stack
 
