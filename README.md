@@ -106,16 +106,6 @@ The tool calculates Pearson correlation between two numeric columns and returns 
 ### Top Values Analysis
 
 <p align="center">
-  <img src="screenshots/top-values/01-upload.png" width="620" />
-</p>
-
-<p align="center">
-  <em>Start by choosing a CSV containing categorical or text data.</em>
-</p>
-
-<br>
-
-<p align="center">
   <img src="screenshots/top-values/02-answer.png" width="620" />
 </p>
 
